@@ -37,12 +37,18 @@ class DefaultController extends Controller
         /** @var RegistrationExecutor $registrationExecutor */
         $registrationExecutor = app('nour.registration_executor');
 
-        $result = $registrationExecutor->validate($ticket, $email);
-
         $data = [
-            'status' => $result ? 'ok' : 'error',
             'email'  => $email,
         ];
+
+        $result = false;
+        try {
+            $result = $registrationExecutor->validate($ticket, $email);
+        } catch (\Exception $ex) {
+            $data['error'] = $ex->getMessage();
+        }
+
+        $data['status'] = $result ? 'ok' : 'error';
 
         return response()->json($data);
     }

@@ -64,6 +64,18 @@ return [
             'strict'    => false,
         ],
 
+        'bitrix' => [
+            'driver'    => 'mysql',
+            'host'      => env('BX_DB_HOST', 'localhost'),
+            'database'  => env('BX_DB_DATABASE', 'forge'),
+            'username'  => env('BX_DB_USERNAME', 'forge'),
+            'password'  => env('BX_DB_PASSWORD', ''),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),

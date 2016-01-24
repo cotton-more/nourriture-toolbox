@@ -25,12 +25,17 @@ class RegistrarEventListener
         /** @var Mailer $mailer */
         $mailer = app('mailer');
 
-        $mailer->send('registrar::emails.confirm_email', [
-            'email' => $email,
-            'ticket' => $ticket,
-        ], function (Message $message) use ($email) {
-            $message->to($email);
-        });
+        try {
+            $mailer->send('registrar::emails.confirm_email', [
+                'email' => $email,
+                'ticket' => $ticket,
+            ], function (Message $message) use ($email) {
+                $message->to($email);
+                $message->from('registrar@nourriture.ru');
+            });
+        } catch (\Exception $ex) {
+            //
+        }
     }
     
     public function subscribe(Dispatcher $dispatcher)
