@@ -31,16 +31,17 @@ class DefaultController extends Controller
 
     public function validateTicket(Request $request)
     {
-        $ticket = $request->query('ticket');
+        $ticket = $request->input('ticket');
+        $email = $request->input('email');
 
         /** @var RegistrationExecutor $registrationExecutor */
         $registrationExecutor = app('nour.registration_executor');
 
-        $result = $registrationExecutor->validate($ticket);
+        $result = $registrationExecutor->validate($ticket, $email);
 
         $data = [
-            'status' => 'ok',
-            'data' => $result,
+            'status' => $result ? 'ok' : 'error',
+            'email'  => $email,
         ];
 
         return response()->json($data);

@@ -31,6 +31,7 @@ class RegistrationExecutor
 
         $now = Carbon::now();
         $registrationApplication = new RegistrationApplication();
+        $registrationApplication->setAttribute('email', $email);
         $registrationApplication->setAttribute('expired_at', $now->addHours($this->ticketExpireHours));
 
         $registrationApplication->save();
@@ -47,13 +48,13 @@ class RegistrationExecutor
 
     /**
      * @param string $ticket
+     * @param string $email
      * @return bool
      */
-    public function validate($ticket)
+    public function validate($ticket, $email = null)
     {
-        $registrationApplication = RegistrationApplication::unexpired()
-            ->where('ticket', $ticket)
-            ->first();
+        /** @var RegistrationApplication $registrationApplication */
+        $registrationApplication = RegistrationApplication::unexpired($ticket, $email)->first();
 
         if ($registrationApplication) {
             $this->expireRegistrationApplication($registrationApplication);

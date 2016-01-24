@@ -16,6 +16,7 @@ class CreateRegistrationApplicationsTable extends Migration
         Schema::create('registration_applications', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('ticket');
+            $table->string('email');
             $table->timestamp('expired_at')->nullable();
             $table->timestamps();
 

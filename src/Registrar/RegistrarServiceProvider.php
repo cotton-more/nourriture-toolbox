@@ -10,6 +10,8 @@ class RegistrarServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->loadViewsFrom(__DIR__.'/views', 'registrar');
+
         /** @var Dispatcher $events */
         $events = $this->app['events'];
 

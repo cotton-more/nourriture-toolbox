@@ -10,12 +10,27 @@ namespace NourritureToolbox\Registrar\Listeners;
 
 
 use Illuminate\Events\Dispatcher;
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Message;
+use NourritureToolbox\Registrar\Events\RegistrationApplicationWasCreated;
 
 class RegistrarEventListener
 {
-    public function onRegistrationCreate($event)
+    public function onRegistrationCreate(RegistrationApplicationWasCreated $event)
     {
+        $registrationApplication = $event->getRegistrationApplication();
+        $email = $registrationApplication->getAttribute('email');
+        $ticket = $registrationApplication->getAttribute('ticket');
 
+        /** @var Mailer $mailer */
+        $mailer = app('mailer');
+
+        $mailer->send('registrar::emails.confirm_email', [
+            'email' => $email,
+            'ticket' => $ticket,
+        ], function (Message $message) use ($email) {
+            $message->to($email);
+        });
     }
     
     public function subscribe(Dispatcher $dispatcher)

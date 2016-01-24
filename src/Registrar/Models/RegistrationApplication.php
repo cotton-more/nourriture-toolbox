@@ -33,11 +33,21 @@ class RegistrationApplication extends Model
 
     /**
      * @param Builder $builder
+     * @param string $ticket
+     * @param string $email
      * @return Builder
      */
-    public function scopeUnexpired(Builder $builder)
+    public function scopeUnexpired(Builder $builder, $ticket = null, $email = null)
     {
         $builder->where('expired_at', '>', Carbon::now());
+
+        if (null !== $ticket) {
+            $builder->andWhere('ticket', $ticket);
+        }
+
+        if (null !== $email) {
+            $builder->andWhere('email', $email);
+        }
 
         return $builder;
     }
